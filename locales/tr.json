@@ -1,0 +1,67 @@
+{
+  "$vuetify": {
+    "dataFooter": {
+      "pageText": "{0}-{1} . sayfa (Toplam {2} sayfa)"
+    },
+    "dataIterator": {
+      "loadingText": "Öğeler Yükleniyor...",
+      "noResultsText": "Uygun kayıt bulunamadı"
+    },
+    "dataTable": {
+      "itemsPerPageText": "Sayfa başı satır:",
+      "sortBy": "Sıralama"
+    },
+    "fileInput": {
+      "counter": "{0} dosya",
+      "counterSize": "{0} Dosyalar ({1} toplam)"
+    },
+    "noDataText": "Veri bulunamadı"
+  },
+  "account_settings": {
+    "account_settings": "Hesap Ayarları",
+    "change_password": "Şifreni Değiştir"
+  },
+  "announcements": {
+    "mark_all_read": "Hepsini okundu olarak işaretle",
+    "mark_read": "Okundu olarak işaretle",
+    "tab_title": "Duyurular"
+  },
+  "authentication_activity": {
+    "datetime": "Tarih ve Saat",
+    "email": "Email",
+    "error": "Hata",
+    "ip": "IP Adresi",
+    "source": "Kaynak",
+    "success": "Başarılı",
+    "user_agent": "Kullanıcı Tarayıcı Kimliği"
+  },
+  "author_roles": {
+    "colorist": "Renk Uzmanı",
+    "cover": "Kapak",
+    "editor": "Editör",
+    "inker": "Mürekkepleme Sanatçısı",
+    "letterer": "Dizgici",
+    "penciller": "İllüstratör",
+    "translator": "Çevirmen",
+    "writer": "Yazar"
+  },
+  "book_card": {
+    "error": "Hata",
+    "no_release_date": "Yayın Tarihi yok",
+    "unknown": "Analiz daha edilmedi",
+    "unread": "Okunmamış",
+    "unsupported": "Desteklenmiyor"
+  },
+  "book_import": {
+    "button_browse": "Araştır",
+    "button_import": "İçe Aktar",
+    "button_scan": "Tara",
+    "button_select_series": "Seri Seç",
+    "field_import_path": "Klasörden içe aktar",
+    "info_part1": "Bu ekran dosyaları içeri aktarmanıza ve var olan kütüphanelerinizi dışarı çıkartmanıza olanak tanır. Sadece var olan serileri içeri aktarabilirsiniz, bu durumda Komga dosyaları seçilen serilere kopyalacak veya taşıyacaktır.",
+    "no_files_found": "Herhangi bir dosya bulunamadı"
+  },
+  "common": {
+    "locale_name": "Türkçe"
+  }
+}

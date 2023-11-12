@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "vue.volar",
+    "vue.vscode-typescript-vue-plugin",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "formulahendry.auto-rename-tag",
+    "paulmolluzzo.convert-css-in-js",
+    "yoavbls.pretty-ts-errors",
+    "bradlc.vscode-tailwindcss",
+    "oderwat.indent-rainbow",
+    "meganrogge.template-string-converter"
+  ]
+}
