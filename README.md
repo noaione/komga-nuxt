@@ -25,14 +25,13 @@ TODO
 3. Build this repository with: `npm run generate`
 4. Copy the `dist` folder to your `komga-webui` folder
 5. Open `komga/build.gradle.kts`, modify `prepareThymeLeaf` task:
-
 ```kt
 register<Copy>("prepareThymeLeaf") {
   group = "web"
-  # dependsOn("copyWebDist") <-- comment this
+  // dependsOn("copyWebDist") <-- comment this
   from("$webui/dist/index.html")
-  from("$webui/dist/404.html") # <-- add this
-  from("$webui/dist/200.html") # <-- add this
+  from("$webui/dist/404.html") // <-- add this
+  from("$webui/dist/200.html") // <-- add this
   into("$projectDir/src/main/resources/public/")
   filter { line ->
     line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
@@ -41,5 +40,4 @@ register<Copy>("prepareThymeLeaf") {
   }
 }
 ```
-
-1. Run gradle: `./gradlew prepareThymeLeaf assemble`
+6. Run gradle: `./gradlew prepareThymeLeaf assemble`
