@@ -2,7 +2,7 @@
 
 Komga is a free and open source comics/mangas server.
 
-This version of the Web UI is a "fork" of the current Web UI written with Nuxt 3.
+A drop-in replacement of the original Web UI created with Nuxt 3.
 
 ## Features
 - ⬆️ Rewritten everything using Vue 3 Composition API
@@ -25,19 +25,21 @@ TODO
 3. Build this repository with: `npm run generate`
 4. Copy the `dist` folder to your `komga-webui` folder
 5. Open `komga/build.gradle.kts`, modify `prepareThymeLeaf` task:
-   ```kt
-  register<Copy>("prepareThymeLeaf") {
-    group = "web"
-    # dependsOn("copyWebDist") <-- comment this
-    from("$webui/dist/index.html")
-    from("$webui/dist/404.html") # <-- add this
-    from("$webui/dist/200.html") # <-- add this
-    into("$projectDir/src/main/resources/public/")
-    filter { line ->
-      line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
-        it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
-      }
+
+```kt
+register<Copy>("prepareThymeLeaf") {
+  group = "web"
+  # dependsOn("copyWebDist") <-- comment this
+  from("$webui/dist/index.html")
+  from("$webui/dist/404.html") # <-- add this
+  from("$webui/dist/200.html") # <-- add this
+  into("$projectDir/src/main/resources/public/")
+  filter { line ->
+    line.replace("((?:src|content|href)=\")([\\w]*/.*?)(\")".toRegex()) {
+      it.groups[0]?.value + " th:" + it.groups[1]?.value + "@{" + it.groups[2]?.value?.prefixIfNot("/") + "}" + it.groups[3]?.value
     }
   }
-   ```
-6. Run gradle: `./gradlew prepareThymeLeaf assemble`
+}
+```
+
+1. Run gradle: `./gradlew prepareThymeLeaf assemble`
