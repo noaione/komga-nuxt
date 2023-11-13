@@ -32,7 +32,7 @@ function removePagesMatching(pattern: RegExp, pages: NuxtPage[] = []) {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  ssr: true,
+  ssr: false,
   vue: {
     defineModel: true,
     propsDestructure: true,
@@ -54,6 +54,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "@nuxtjs/eslint-module",
     "@vueuse/nuxt",
+    "nuxt-open-fetch",
   ],
   colorMode: {
     preference: "system",
@@ -107,6 +108,13 @@ export default defineNuxtConfig({
       publicPath: import.meta.env.PROD ? "./" : "/",
       // Used when on dev mode or not bundled with the Spring Boot app
       baseHost: getEnv("BASE_HOST") ?? getEnv("NUXT_PUBLIC_BASE_HOST") ?? undefined,
+    },
+  },
+  openFetch: {
+    clients: {
+      komga: {
+        baseURL: "",
+      },
     },
   },
 });
