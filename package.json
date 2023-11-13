@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && patch-package",
     "format": "prettier --write --ignore-path .gitignore --ignore-path .prettierignore \"**/*.{js,ts,vue,json,md}\"",
     "lint": "eslint --ext .js,.ts,.vue --ignore-path .gitignore .",
     "lint:fix": "eslint --fix --ext .js,.ts,.vue --ignore-path .gitignore ."
@@ -33,6 +33,7 @@
     "locale-code": "^2.0.2",
     "nuxt": "^3.8.1",
     "nuxt-open-fetch": "^0.3.0",
+    "patch-package": "^8.0.0",
     "prettier": "^3.0.3",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5",
