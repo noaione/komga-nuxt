@@ -45,8 +45,10 @@ export default defineNuxtConfig({
       }),
     ],
   },
+  build: {
+    transpile: ["vue-i18n"],
+  },
   modules: [
-    "@nuxtjs/i18n",
     "vuetify-nuxt-module",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
@@ -78,13 +80,19 @@ export default defineNuxtConfig({
       ],
     },
   },
-  i18n: {
-    strategy: "no_prefix",
-    defaultLocale: "en",
-    vueI18n: "./i18n.config.ts",
-    compilation: {
-      strictMessage: false,
-    },
+  imports: {
+    imports: [
+      {
+        name: "useVuelidate",
+        from: "@vuelidate/core",
+      },
+    ],
+    presets: [
+      {
+        from: "vue-i18n",
+        imports: ["useI18n"],
+      },
+    ],
   },
   hooks: {
     "pages:extend"(pages) {
@@ -116,5 +124,8 @@ export default defineNuxtConfig({
         baseURL: "",
       },
     },
+  },
+  vuetify: {
+    vuetifyOptions: "./vuetify.config.ts",
   },
 });
