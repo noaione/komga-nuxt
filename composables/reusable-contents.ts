@@ -10,8 +10,14 @@ export interface KomgaReusableSnackbar {
   };
 }
 
+export interface KomgaTaskQueue {
+  count: number;
+  countByType: Record<string, number>;
+}
+
 interface KomgaReusable {
   snackbars: KomgaReusableSnackbar[];
+  tasksData?: KomgaTaskQueue;
 }
 
 export const useReusableContents = defineStore("komga.reusableDialogs", {
@@ -20,8 +26,6 @@ export const useReusableContents = defineStore("komga.reusableDialogs", {
   }),
   actions: {
     queueSnackbar(data: KomgaReusableSnackbar) {
-      console.log("queueSnackbar", data);
-
       this.snackbars.push(data);
     },
     getSnackbar() {
