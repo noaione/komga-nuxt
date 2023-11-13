@@ -5,26 +5,31 @@ Komga is a free and open source comics/mangas server.
 A drop-in replacement of the original Web UI created with Nuxt 3.
 
 ## Features
+
 - ⬆️ Rewritten everything using Vue 3 Composition API
 - 🍍 Use modern Pinia for State Management
 - 🚀 Blazing fast build with Vite
 - ⚙️ Additional features added that is taken from my own [fork](https://github.com/noaione/komga/tree/naoX/komga-webui)
 
 ## Requirements
+
 - Node.js 18.x+
 - NPM
 
 ## Deployment
+
 **On PaaS (Vercel/Cloudflare/etc)**
 
 TODO
 
 **Replacing Bundled Web UI**
+
 1. Clone this repository
 2. Clone Komga repository
 3. Build this repository with: `npm run generate`
 4. Copy the `dist` folder to your `komga-webui` folder
 5. Open `komga/build.gradle.kts`, modify `prepareThymeLeaf` task:
+
 ```kt
 register<Copy>("prepareThymeLeaf") {
   group = "web"
@@ -40,4 +45,5 @@ register<Copy>("prepareThymeLeaf") {
   }
 }
 ```
+
 6. Run gradle: `./gradlew prepareThymeLeaf assemble`

@@ -42,8 +42,8 @@ export default defineNuxtConfig({
       VueI18nPlugin.vite({
         include: resolve(dirname(fileURLToPath(import.meta.url)), "./locales/**"),
         strictMessage: false,
-      })
-    ]
+      }),
+    ],
   },
   modules: [
     "@nuxtjs/i18n",
@@ -83,7 +83,7 @@ export default defineNuxtConfig({
     vueI18n: "./i18n.config.ts",
     compilation: {
       strictMessage: false,
-    }
+    },
   },
   hooks: {
     "pages:extend"(pages) {
