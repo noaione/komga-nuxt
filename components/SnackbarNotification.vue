@@ -3,10 +3,10 @@
     v-if="currentSnackbar"
     v-model="currentSnackbar.show"
     :color="currentSnackbar.color"
-    location="bottom"
-    multi-line
+    :multi-line="Boolean(currentSnackbar.details)"
     :vertical="currentSnackbar.vertical"
     :timeout="currentSnackbar.timeout"
+    location="bottom"
   >
     <p>{{ currentSnackbar.text }}</p>
     <p v-if="currentSnackbar.details">{{ currentSnackbar.details }}</p>
