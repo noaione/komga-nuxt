@@ -24,4 +24,5 @@
     },
     "editor.tabSize": 2,
     "editor.rulers": [110],
+    "i18n-ally.keystyle": "nested",
 }
