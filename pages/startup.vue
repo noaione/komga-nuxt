@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const router = useRouter();
-const komgaAuth = useKomgaAuth();
+const komgaAuth = useKomgaUser();
 
 const maxLogoWidth = computed(() => {
   switch (useDisplay().name.value) {

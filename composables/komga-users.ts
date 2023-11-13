@@ -1,7 +1,5 @@
 // import type { components as KomgaComponents } from "#build/types/nuxt-open-fetch/komga";
-import type { FetchResponse } from "ofetch";
-
-export const useKomgaAuth = defineStore(
+export const useKomgaUser = defineStore(
   "komga.auth",
   () => {
     const { origin } = useKomgaServerUrl();
@@ -13,32 +11,9 @@ export const useKomgaAuth = defineStore(
 
     // Getters
     const authenticated = computed(() => user.value !== undefined);
-    const cookies = computed(() => {
-      if (tokenSession.value === undefined) return;
-
-      const tempCookies = [`SESSION=${tokenSession.value}`];
-
-      if (tokenRememberMe.value !== undefined) {
-        tempCookies.push(`remember-me=${tokenRememberMe.value}`);
-      }
-
-      return tempCookies.join("; ");
-    });
     const isAdmin = computed(() => user.value?.roles.includes("ADMIN"));
     const canDownload = computed(() => user.value?.roles.includes("FILE_DOWNLOAD"));
     const canRead = computed(() => user.value?.roles.includes("PAGE_STREAMING"));
-
-    function interceptResponse(response: FetchResponse<any>) {
-      const cookies = response.headers.getSetCookie();
-
-      for (const cookie of cookies) {
-        if (cookie.startsWith("SESSION=")) {
-          tokenSession.value = cookie.slice(8, cookie.indexOf(";"));
-        } else if (cookie.startsWith("remember-me=")) {
-          tokenRememberMe.value = cookie.slice(12, cookie.indexOf(";"));
-        }
-      }
-    }
 
     // Methods
     async function login(username: string, password: string, rememberMe: boolean) {
@@ -50,9 +25,7 @@ export const useKomgaAuth = defineStore(
           Authorization: `Basic ${btoa(`${username}:${password}`)}`,
         },
         baseURL: origin,
-        onResponse: ({ response }) => {
-          interceptResponse(response);
-        },
+        credentials: "include",
       });
 
       if (data.value) {
@@ -66,31 +39,22 @@ export const useKomgaAuth = defineStore(
           "X-Auth-Token": xAuthToken,
         },
         baseURL: origin,
-        onResponse: ({ response }) => {
-          interceptResponse(response);
-        },
+        credentials: "include",
       });
     }
 
     async function getSetUser() {
-      const cookieData = cookies.value;
-
-      if (cookieData === undefined) {
-        throw new Error("No session cookie");
-      }
-
-      const { data } = await useKomgaFetch("/api/v2/users/me", {
-        headers: {
-          Cookie: cookieData,
-        },
+      const { data, error } = await useKomgaFetch("/api/v2/users/me", {
         baseURL: origin,
-        onResponse: ({ response }) => {
-          interceptResponse(response);
-        },
+        credentials: "include",
       });
 
       if (data.value) {
-        user.value = data.value;
+        user.value = data;
+      }
+
+      if (error) {
+        throw error;
       }
     }
 
@@ -105,11 +69,9 @@ export const useKomgaAuth = defineStore(
       tokenRememberMe,
       user,
       authenticated,
-      cookies,
       isAdmin,
       canDownload,
       canRead,
-      interceptResponse,
       login,
       oauthLogin,
       getSetUser,

@@ -1,7 +1,7 @@
 const startsWithRoutes = ["/settings", "/media-management", "/import"];
 
 export default defineNuxtPlugin(() => {
-  const auth = useKomgaAuth();
+  const auth = useKomgaUser();
 
   addRouteMiddleware(
     "admin-guard",

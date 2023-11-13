@@ -254,7 +254,8 @@
     "unlock_all": "Unlock all",
     "url": "URL",
     "use_filter_panel_to_change_filter": "Use the filter panel to change the active filter",
-    "year": "year"
+    "year": "year",
+    "error_console": "An error occured, please check console!"
   },
   "dashboard": {
     "keep_reading": "Keep Reading",
