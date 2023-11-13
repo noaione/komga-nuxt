@@ -14,7 +14,7 @@
         "**/Thumbs.db": true,
         "node_modules/**": true,
         ".svelte-kit/**": true,
-        ".nuxt/**": true
+        ".output/**": true
     },
     "[javascript]": {
         "editor.formatOnSave": true
