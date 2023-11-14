@@ -62,6 +62,7 @@ export default defineNuxtConfig({
   colorMode: {
     preference: "system",
     fallback: "dark",
+    storageKey: "komgaN3.theme",
   },
   eslint: {
     lintOnStart: false,

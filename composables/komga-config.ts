@@ -45,6 +45,7 @@ interface KomgaConfigN3 {
   importPath?: string;
   rememberMe: boolean;
   duplicateNewPageSize: number;
+  locale: string;
 }
 
 export const useKomgaConfig = defineStore("komga.config", {
@@ -82,6 +83,7 @@ export const useKomgaConfig = defineStore("komga.config", {
     importPath: undefined,
     rememberMe: false,
     duplicateNewPageSize: 10,
+    locale: "en",
   }),
   getters: {
     isContinous(state) {

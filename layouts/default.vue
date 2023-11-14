@@ -1,6 +1,6 @@
 <template>
   <div class="fill-height">
-    <VAppBar scroll-behavior="elevate" scroll-threshold="0" order="1">
+    <VAppBar scroll-behavior="elevate" scroll-threshold="0" order="2">
       <VBadge dot :model-value="showBadge" :color="info.booksToCheck > 0 ? 'accent' : 'warning'" class="ms-2">
         <VAppBarNavIcon @click.stop="drawerVisible = !drawerVisible" />
       </VBadge>

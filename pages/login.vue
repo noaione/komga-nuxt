@@ -69,27 +69,11 @@
 
       <VRow justify="center">
         <VCol cols="6">
-          <VSelect
-            v-model="locale"
-            item-title="text"
-            item-value="value"
-            variant="underlined"
-            :items="availableLocales"
-            :label="$t('home.translation')"
-            prepend-icon="mdi-translate"
-          />
+          <LocaleSwitcher />
         </VCol>
 
         <VCol cols="6">
-          <VSelect
-            v-model="$colorMode.preference"
-            item-title="text"
-            item-value="value"
-            variant="underlined"
-            :items="availableColors"
-            :label="$t('home.theme')"
-            :prepend-icon="themeIcon"
-          />
+          <ThemeSwitcher :prepend-icon="themeIcon" />
         </VCol>
       </VRow>
     </form>
@@ -108,39 +92,8 @@ const formSubmit = ref(false);
 const claimed = ref(true);
 
 const colorMode = useColorMode();
-const { t, locale, availableLocales: locales } = useI18n();
+const { t } = useI18n();
 
-const availableColors = [
-  {
-    text: t("theme.system"),
-    value: "system",
-  },
-  {
-    text: t("theme.light"),
-    value: "light",
-  },
-  {
-    text: t("theme.dark"),
-    value: "dark",
-  },
-];
-
-const availableLocales = computed(() => {
-  return locales.map((loc) => {
-    const langNames = new Intl.DisplayNames([loc.replace("_", "-")], { type: "language" });
-
-    let name = langNames.of(loc.replace("_", "-"));
-
-    if (name) {
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-
-    return {
-      text: name || loc,
-      value: loc,
-    };
-  });
-});
 const themeIcon = computed(() => {
   switch (colorMode.preference) {
     case "light": {

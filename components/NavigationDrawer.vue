@@ -1,6 +1,6 @@
 <template>
-  <VNavigationDrawer v-model="drawerVisible" :location="$vuetify.locale.isRtl ? 'right' : 'left'" order="0">
-    <VListItem :active="false" class="pb-4" @click="$router.push('/dashboard')">
+  <VNavigationDrawer v-model="drawerVisible" :location="$vuetify.locale.isRtl ? 'right' : 'left'" order="1">
+    <VListItem :active="false" class="py-4" @click="$router.push('/dashboard')">
       <template #prepend>
         <VAvatar>
           <VImg src="~/assets/logo.svg" />
@@ -99,17 +99,7 @@
         </template>
 
         <template #default>
-          <VSelect
-            v-model="$colorMode.preference"
-            item-title="text"
-            item-value="value"
-            variant="underlined"
-            density="compact"
-            color="primary"
-            class="mt-2"
-            :items="availableColors"
-            :label="$t('home.theme')"
-          />
+          <ThemeSwitcher class="mt-2" />
         </template>
       </VListItem>
     </VList>
@@ -119,17 +109,7 @@
         <template #prepend>
           <VIcon class="mb-4">mdi-translate</VIcon>
         </template>
-        <VSelect
-          v-model="locale"
-          item-title="text"
-          item-value="value"
-          variant="underlined"
-          density="compact"
-          color="primary"
-          class="mt-2"
-          :items="availableLocales"
-          :label="$t('home.translation')"
-        />
+        <LocaleSwitcher class="mt-2" />
       </VListItem>
     </VList>
   </VNavigationDrawer>
@@ -160,7 +140,6 @@ const globals = useKomgaGlobals();
 const libraries = useKomgaLibraries();
 const reusables = useReusableContents();
 const router = useRouter();
-const { t, locale, availableLocales: locales } = useI18n();
 const colorMode = useColorMode();
 
 const booksCheck = computed(() => {
@@ -171,36 +150,6 @@ const showAnnounce = computed(() => {
   return globals.announcementCount === 0;
 });
 
-const availableColors = [
-  {
-    text: t("theme.system"),
-    value: "system",
-  },
-  {
-    text: t("theme.light"),
-    value: "light",
-  },
-  {
-    text: t("theme.dark"),
-    value: "dark",
-  },
-];
-const availableLocales = computed(() => {
-  return locales.map((loc) => {
-    const langNames = new Intl.DisplayNames([loc.replace("_", "-")], { type: "language" });
-
-    let name = langNames.of(loc.replace("_", "-"));
-
-    if (name) {
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-    }
-
-    return {
-      text: name || loc,
-      value: loc,
-    };
-  });
-});
 const themeIcon = computed(() => {
   switch (colorMode.preference) {
     case "light": {
@@ -242,8 +191,7 @@ async function performLogout() {
 }
 
 async function doLogout() {
-  if (await performLogout()) {
-    router.push("/login");
-  }
+  await performLogout();
+  router.push("/login");
 }
 </script>

@@ -16,7 +16,9 @@
       />
     </ToolbarSticky>
     <LibraryNavigation v-if="$vuetify.display.smAndDown" :library-id="library.libraryId" bottom-navigation />
-    <NuxtPage v-if="library.libraryId !== 'all'" />
+    <VContainer fluid>
+      <NuxtPage v-if="library.libraryId !== 'all'" />
+    </VContainer>
   </div>
 </template>
 
