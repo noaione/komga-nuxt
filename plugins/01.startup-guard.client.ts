@@ -9,10 +9,12 @@ export default defineNuxtPlugin(() => {
       window.close();
     }
 
-    if (!to.path.startsWith("/startup") && !to.path.startsWith("/login") && !auth.authenticated) {
+    if (!auth.authenticated) {
       const redirect = encodeURIComponent(to.fullPath);
 
-      return navigateTo(`/startup?redirect=${redirect}`);
+      if (!to.path.startsWith("/startup") && !to.path.startsWith("/login")) {
+        return navigateTo(`/startup?redirect=${redirect}`);
+      }
     }
   });
 });
