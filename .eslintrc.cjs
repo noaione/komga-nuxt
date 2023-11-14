@@ -138,7 +138,7 @@ module.exports = {
           lang: "ts",
         },
         style: {
-          lang: "postcss",
+          lang: "scss",
         },
       },
     ],

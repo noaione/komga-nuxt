@@ -3,6 +3,22 @@
   // $text-field-details-padding-inline: 0px !ce,
 );
 
+html {
+  overflow-y: auto !important;
+}
+
+.link-none {
+  text-decoration: none;
+}
+
+.link-underline {
+  text-decoration: none;
+}
+
+.link-underline:hover {
+  text-decoration: underline;
+}
+
 .unread-tick {
   border-left: 25px solid transparent;
   border-right: 25px solid orange;
@@ -12,4 +28,20 @@
   position: absolute;
   right: 0;
   z-index: 2
+}
+
+.list-danger:hover {
+  background: #ff5252;
+}
+
+.list-danger:hover .v-list-item__title {
+  color: white;
+}
+
+.list-warning:hover {
+  background: #fb8c00;
+}
+
+.list-warning:hover .v-list-item__title {
+  color: white;
 }

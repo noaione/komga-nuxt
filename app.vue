@@ -4,6 +4,7 @@
       <NuxtPage />
     </NuxtLayout>
     <SnackbarNotification />
+    <DialogConfirmation />
   </VApp>
 </template>
 

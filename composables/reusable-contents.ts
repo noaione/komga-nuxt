@@ -15,9 +15,22 @@ export interface KomgaTaskQueue {
   countByType: Record<string, number>;
 }
 
+export interface KomgaReusableConfirmDialog {
+  title: string;
+  body?: string;
+  asHtml?: boolean;
+  confirmText?: string;
+  buttonCancel?: string;
+  buttonConfirm?: string;
+  buttonConfirmColor?: string;
+  buttonAlternate?: string;
+  onConfirm: () => void;
+}
+
 interface KomgaReusable {
   snackbars: KomgaReusableSnackbar[];
   tasksData?: KomgaTaskQueue;
+  confirmDialog?: KomgaReusableConfirmDialog;
 }
 
 export const useReusableContents = defineStore("komga.reusableDialogs", {
@@ -30,6 +43,14 @@ export const useReusableContents = defineStore("komga.reusableDialogs", {
     },
     getSnackbar() {
       return this.snackbars.shift();
+    },
+    openConfirmDialog(data: KomgaReusableConfirmDialog) {
+      const mergedData: KomgaReusableConfirmDialog = {
+        buttonConfirmColor: "primary",
+        ...data,
+      };
+
+      this.confirmDialog = mergedData;
     },
   },
 });

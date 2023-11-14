@@ -39,7 +39,7 @@ interface KomgaConfigN3 {
       };
     };
     routeMode: {
-      [libraryId: string]: "recommended" | "browse" | "collection" | "read-list";
+      [libraryId: string]: "recommended" | "series" | "collections" | "readlists";
     };
   };
   importPath?: string;

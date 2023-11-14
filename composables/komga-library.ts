@@ -6,6 +6,7 @@ interface KomgaLibrariesState {
 }
 
 interface KomgaLibraryState {
+  libraryId: string;
   library?: KomgaComponents["schemas"]["LibraryDto"];
   series: KomgaComponents["schemas"]["SeriesDto"][];
   page: number;
@@ -15,6 +16,7 @@ interface KomgaLibraryState {
 export const useKomgaLibrary = (libraryId: string) => {
   return defineStore(`komga.library.${libraryId}`, {
     state: (): KomgaLibraryState => ({
+      libraryId,
       library: undefined,
       series: [],
       page: 0,
@@ -35,7 +37,7 @@ export const useKomgaLibrary = (libraryId: string) => {
         const { data } = await useKomgaFetch("/api/v1/series", {
           method: "GET",
           params: {
-            library_id: this.library?.id,
+            library_id: this.libraryId === "all" ? undefined : libraryId,
             page: this.page,
             size: config.pageSize.libraries,
           },
@@ -46,6 +48,28 @@ export const useKomgaLibrary = (libraryId: string) => {
         if (data.value) {
           this.totalSeries = data.value.totalElements ?? 0;
           this.series = data.value.content ?? [];
+        }
+      },
+      async fetchLibrary() {
+        if (this.libraryId === "all") {
+          return;
+        }
+
+        const { data } = await useKomgaFetch("/api/v1/libraries/{libraryId}", {
+          method: "GET",
+          path: {
+            libraryId: this.libraryId,
+          },
+          credentials: "include",
+          baseURL: useKomgaServerUrl().origin,
+        });
+
+        if (data.value) {
+          this.library = data.value;
+
+          const upstream = useKomgaLibraries();
+
+          upstream.setLibrary(data.value, true);
         }
       },
     },
@@ -65,7 +89,7 @@ export const useKomgaLibraries = defineStore("komga.libraries", {
     },
   },
   actions: {
-    async fetchLibraries() {
+    async fetchLibraries(withSeries?: boolean) {
       const { data } = await useKomgaFetch("/api/v1/libraries", {
         method: "GET",
         credentials: "include",
@@ -78,6 +102,12 @@ export const useKomgaLibraries = defineStore("komga.libraries", {
       if (data.value) {
         for (const item of data.value) {
           this.setLibrary(item);
+
+          if (withSeries) {
+            const libraryStore = useKomgaLibrary(item.id);
+
+            await libraryStore.fetchSeries(0);
+          }
         }
       }
     },
@@ -125,12 +155,14 @@ export const useKomgaLibraries = defineStore("komga.libraries", {
         delete getActivePinia()?.state.value[libraryStore.$id];
       } catch {}
     },
-    setLibrary(library: KomgaComponents["schemas"]["LibraryDto"]) {
+    setLibrary(library: KomgaComponents["schemas"]["LibraryDto"], skipStore?: boolean) {
       this.libraries[library.id] = library;
 
-      const libraryStore = useKomgaLibrary(library.id);
+      if (!skipStore) {
+        const libraryStore = useKomgaLibrary(library.id);
 
-      libraryStore.library = library;
+        libraryStore.library = library;
+      }
     },
     deleteLibrary(libraryId: string) {
       delete this.libraries[libraryId];
