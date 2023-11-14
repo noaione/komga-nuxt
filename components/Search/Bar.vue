@@ -55,9 +55,6 @@
 
 <script setup lang="ts">
 import type { components as KomgaComponents } from "#build/types/nuxt-open-fetch/komga";
-import SearchResultBook from "./SearchResultBook.vue";
-import SearchResultReadCollection from "./SearchResultReadCollection.vue";
-import SearchResultSeries from "./SearchResultSeries.vue";
 
 type KomgaBookWrapped = {
   type: "book";

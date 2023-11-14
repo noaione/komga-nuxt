@@ -5,7 +5,7 @@
         <VAppBarNavIcon @click.stop="drawerVisible = !drawerVisible" />
       </VBadge>
 
-      <SearchBox class="flex-fill" />
+      <SearchBar class="flex-fill" />
     </VAppBar>
 
     <NavigationDrawer v-model="drawerVisible" />
@@ -17,8 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import SearchBox from "~/composables/Search/SearchBox.vue";
-
 const display = useDisplay();
 const info = useKomgaGlobals();
 const drawerVisible = ref(display.lgAndUp);
