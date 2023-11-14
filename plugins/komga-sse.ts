@@ -47,6 +47,14 @@ class KomgaSSEPlugin {
           this.reconnectAttempt = 1;
           this._connected = true;
         } else if (response.status >= 400 && response.status < 500 && response.status !== 429) {
+          // Check if the error is non-authorized (401/403)
+          if (response.status === 401 || response.status === 403) {
+            // Emit KomgaSSEUnauthorized event
+            const event = new CustomEvent("KomgaSSEUnauthorized");
+
+            this.eventTarget.dispatchEvent(event);
+          }
+
           // client-side errors are usually non-retriable:
           throw new FatalError();
         } else {
