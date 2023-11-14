@@ -9,4 +9,8 @@ onMounted(() => {
     router.push("/startup?redirect=/");
   }
 });
+
+definePageMeta({
+  layout: "fullpage",
+});
 </script>
