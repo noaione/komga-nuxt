@@ -206,7 +206,7 @@ function onItemSelected(data: KomgaSearchResultWrapped) {
       break;
     }
     case "search": {
-      router.push(`/search?q=${_searchString}`);
+      router.push(`/search?q=${_searchString.value}`);
       break;
     }
   }
