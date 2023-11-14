@@ -23,6 +23,7 @@
             :loading="formSubmit"
             :disabled="formSubmit"
             autocomplete="username"
+            variant="underlined"
             autofocus
             @blur="v$.login.$touch()"
           />
@@ -39,20 +40,25 @@
             :disabled="formSubmit"
             type="password"
             autocomplete="current-password"
+            variant="underlined"
             @blur="v$.password.$touch()"
           />
         </VCol>
       </VRow>
 
-      <VRow>
-        <VCol class="py-0">
-          <VCheckbox v-model="rememberMe" :label="$t('common.remember-me')" hide-details class="mt-0" />
-        </VCol>
+      <VRow class="mt-0">
+        <VCheckbox
+          v-model="rememberMe"
+          :label="$t('common.remember-me')"
+          hide-details
+          class="mt-0 px-0"
+          color="primary"
+        />
       </VRow>
 
       <VRow>
         <VCol v-if="claimed" cols="auto">
-          <VBtn color="primary" type="submit" :disabled="v$.$invalid">{{ $t("login.login") }} </VBtn>
+          <VBtn color="primary" type="submit">{{ $t("login.login") }} </VBtn>
         </VCol>
         <VCol v-if="!claimed" cols="auto">
           <VBtn color="primary" @click="claimServer">{{ $t("login.create_user_account") }} </VBtn>
@@ -67,7 +73,7 @@
             v-model="locale"
             item-title="text"
             item-value="value"
-            single-line
+            variant="underlined"
             :items="availableLocales"
             :label="$t('home.translation')"
             prepend-icon="mdi-translate"
@@ -79,7 +85,7 @@
             v-model="$colorMode.preference"
             item-title="text"
             item-value="value"
-            single-line
+            variant="underlined"
             :items="availableColors"
             :label="$t('home.theme')"
             :prepend-icon="themeIcon"
