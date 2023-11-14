@@ -1,13 +1,12 @@
-// import type { components as KomgaComponents } from "#build/types/nuxt-open-fetch/komga";
+import type { components as KomgaComponents } from "#build/types/nuxt-open-fetch/komga";
+
 export const useKomgaUser = defineStore(
   "komga.auth",
   () => {
     const { origin } = useKomgaServerUrl();
 
     // State
-    const tokenSession = ref<string>();
-    const tokenRememberMe = ref<string>();
-    const user = ref();
+    const user = ref<KomgaComponents["schemas"]["UserDto"]>();
 
     // Getters
     const authenticated = computed(() => user.value !== undefined);
@@ -50,7 +49,7 @@ export const useKomgaUser = defineStore(
       });
 
       if (data.value) {
-        user.value = data;
+        user.value = data.value;
       }
 
       if (error) {
@@ -59,14 +58,10 @@ export const useKomgaUser = defineStore(
     }
 
     function logout() {
-      tokenSession.value = undefined;
-      tokenRememberMe.value = undefined;
       user.value = undefined;
     }
 
     return {
-      tokenSession,
-      tokenRememberMe,
       user,
       authenticated,
       isAdmin,
