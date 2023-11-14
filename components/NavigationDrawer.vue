@@ -31,7 +31,17 @@
         </template>
       </VListItem>
 
-      <!-- TODO: Library Navigaton -->
+      <VListItem
+        v-for="library in libraries.librariesList"
+        :key="library.id"
+        :to="`/libraries/${library.id}`"
+        class="py-4"
+      >
+        <template #prepend>
+          <VIcon :style="{ visibility: 'hidden' }">mdi-book</VIcon>
+        </template>
+        <VListItemTitle class="text-body-2">{{ library.name }}</VListItemTitle>
+      </VListItem>
 
       <VListItem v-if="user.isAdmin" to="/import" class="py-4">
         <template #prepend>
@@ -147,6 +157,7 @@ const drawerVisible = computed({
 
 const user = useKomgaUser();
 const globals = useKomgaGlobals();
+const libraries = useKomgaLibraries();
 const reusables = useReusableContents();
 const router = useRouter();
 const { t, locale, availableLocales: locales } = useI18n();

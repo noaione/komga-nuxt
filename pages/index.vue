@@ -4,7 +4,7 @@ const router = useRouter();
 
 onMounted(() => {
   if (auth.authenticated) {
-    router.push("/dashboard");
+    router.push("/startup?redirect=/dashboard");
   } else {
     router.push("/startup?redirect=/");
   }

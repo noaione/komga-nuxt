@@ -136,6 +136,11 @@ export default defineNuxtConfig({
         name: "useVuelidate",
         from: "@vuelidate/core",
       },
+      {
+        name: "components",
+        from: "#build/types/nuxt-open-fetch/komga",
+        as: "KomgaComponents",
+      },
     ],
     presets: [
       {

@@ -8,6 +8,7 @@
 const route = useRoute();
 const router = useRouter();
 const komgaAuth = useKomgaUser();
+const komgaLibraries = useKomgaLibraries();
 
 const maxLogoWidth = computed(() => {
   switch (useDisplay().name.value) {
@@ -38,7 +39,15 @@ onMounted(async () => {
 
     await komgaAuth.getSetUser();
     // Fetch libaries
-    router.back();
+    await komgaLibraries.fetchLibraries();
+
+    const redirect = route.query.redirect?.toString();
+
+    if (redirect) {
+      router.push(redirect);
+    } else {
+      router.push("/dashboard");
+    }
   } catch {
     const redirect = route.query.redirect?.toString();
 

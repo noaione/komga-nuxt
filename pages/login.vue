@@ -214,6 +214,10 @@ async function performLogin() {
 
     const redirect = router.currentRoute.value.query.redirect?.toString();
 
+    const komgaLibraries = useKomgaLibraries();
+
+    await komgaLibraries.fetchLibraries();
+
     if (redirect) {
       router.push(redirect);
     } else {
