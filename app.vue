@@ -31,6 +31,18 @@ onMounted(() => {
     router.push("/login");
   });
 
+  $komgaSSE.on("KomgaSSEUnauthorized", () => {
+    auth.logout();
+
+    const currentRoute = router.currentRoute.value.fullPath;
+
+    if (currentRoute.startsWith("/login")) {
+      router.push("/login");
+    } else {
+      router.push(`/login?redirect=${encodeURIComponent(currentRoute)}`);
+    }
+  });
+
   if (auth.authenticated) {
     $komgaSSE.connect();
   }

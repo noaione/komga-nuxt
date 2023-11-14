@@ -54,6 +54,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/google-fonts",
+    "@nuxtjs/fontaine",
     "@nuxtjs/eslint-module",
     "@vueuse/nuxt",
     "nuxt-open-fetch",
@@ -67,6 +68,55 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
+      meta: [
+        {
+          "http-equiv": "x-ua-compatible",
+          content: "IE=edge",
+        },
+        {
+          name: "apple-mobile-web-app-capable",
+          content: "yes",
+        },
+        {
+          name: "mobile-web-app-capable",
+          content: "yes",
+        },
+        {
+          name: "msapplication-TileColor",
+          content: "#08397f",
+        },
+        {
+          name: "msapplication-TileImage",
+          content: "/mstile-144x144.png",
+        },
+      ],
+      link: [
+        {
+          rel: "icon",
+          href: "/favicon.ico",
+        },
+        {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png",
+        },
+        {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png",
+        },
+        {
+          rel: "manifest",
+          href: "/manifest.json",
+        },
+      ],
       script: [
         {
           // @ts-expect-error - we're adding th:inline since it will be used by thymeleaf
@@ -106,7 +156,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      Roboto: true,
+      Inter: true,
     },
   },
   runtimeConfig: {
@@ -127,5 +177,14 @@ export default defineNuxtConfig({
   },
   vuetify: {
     vuetifyOptions: "./vuetify.config.ts",
+    moduleOptions: {
+      styles: {
+        configFile: "assets/vuetify/settings.scss",
+      },
+    },
+  },
+  css: ["~/assets/vuetify/main.scss"],
+  experimental: {
+    inlineSSRStyles: false,
   },
 });
