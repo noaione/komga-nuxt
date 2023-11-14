@@ -24,6 +24,7 @@
             :disabled="formSubmit"
             autocomplete="username"
             variant="underlined"
+            color="primary"
             autofocus
             @blur="v$.login.$touch()"
           />
@@ -41,6 +42,7 @@
             type="password"
             autocomplete="current-password"
             variant="underlined"
+            color="primary"
             @blur="v$.password.$touch()"
           />
         </VCol>
