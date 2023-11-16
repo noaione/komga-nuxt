@@ -31,11 +31,11 @@ TODO
 
 1. Clone this repository
 2. Clone Komga repository
-3. Build this repository with: `npm run build:komga`
+3. Build this repository with: `npm run build:servlet`
 4. Copy the build `dist` folder contents into `komga/src/main/resources/public`
 5. Run gradle: `./gradlew assemble`
 
-The `build:komga` script is special since it will automatically run a Nitro hooks that will modify the build
+The `build:servlet` script is special since it will automatically run a Nitro hooks that will modify the build
 process of the project to make it fully SPA and support Spring Boot base URL by utilizing `window.resourceBaseHost`.
 
 You can see how it modify stuff by looking at: [`modules/servlet-rewrite.ts`](https://github.com/noaione/komga-nuxt/blob/master/modules/servlet-rewrite.ts)
