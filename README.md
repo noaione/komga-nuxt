@@ -1,10 +1,9 @@
-# ![app icon](https://raw.githubusercontent.com/gotson/komga/master/.github/readme-images/app-icon.png) Komga
+# ![app icon](https://raw.githubusercontent.com/noaione/komga-nuxt/master/.github/readme-images/app-icon.png) Komga w/ Nuxt
 
 **Status**: In Development
 
-Komga is a free and open source comics/mangas server.
-
-A drop-in replacement of the original Web UI created with Nuxt 3.
+A drop-in replacement of the original Komga Web UI created with Nuxt 3.
+Komga itself is a free and open source comics/mangas server.
 
 > [!WARNING]
 > This Web UI is still in development and not feature-parity yet with upstream UI.
