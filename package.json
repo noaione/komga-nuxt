@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "cross-env PORT=8081 nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "build:servlet": "cross-env KOMGA_BUILD_MODE=servlet NODE_ENV=production nuxt generate",
@@ -51,5 +51,11 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "pinia": "^2.1.7"
+  },
+  "engines": {
+    "node": ">=18 || <20",
+    "npm": ">=9",
+    "yarn": "please-use-npm",
+    "pnpm": "please-use-npm"
   }
 }
