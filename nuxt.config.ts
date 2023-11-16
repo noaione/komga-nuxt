@@ -115,7 +115,7 @@ export default defineNuxtConfig({
         },
         {
           rel: "manifest",
-          href: "/manifest.json",
+          href: "/manifest.webmanifest",
         },
       ],
       script: [
@@ -167,9 +167,6 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      // with './' the dev server cannot load any arbitrary path
-      // with '/' the prod build generates some url(/fonts…) calls in the css chunks, which doesn't work with a servlet context path
-      publicPath: import.meta.env.PROD ? "./" : "/",
       // Used when on dev mode or not bundled with the Spring Boot app
       baseHost: getEnv("BASE_HOST") ?? getEnv("NUXT_PUBLIC_BASE_HOST") ?? undefined,
     },
