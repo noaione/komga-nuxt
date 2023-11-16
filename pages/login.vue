@@ -60,10 +60,12 @@
 
       <VRow>
         <VCol v-if="claimed" cols="auto">
-          <VBtn color="primary" type="submit">{{ $t("login.login") }} </VBtn>
+          <VBtn color="primary" type="submit" :disabled="formSubmit">{{ $t("login.login") }}</VBtn>
         </VCol>
         <VCol v-if="!claimed" cols="auto">
-          <VBtn color="primary" @click="claimServer">{{ $t("login.create_user_account") }} </VBtn>
+          <VBtn color="primary" :disabled="formSubmit" @click.prevent="claimServer">
+            {{ $t("login.create_user_account") }}
+          </VBtn>
         </VCol>
       </VRow>
 

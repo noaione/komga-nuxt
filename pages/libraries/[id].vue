@@ -8,14 +8,14 @@
           <span :style="{ fontSize: '1.1rem' }">{{ upstream.toolbarCount }}</span>
         </VChip>
       </VToolbarTitle>
-      <LibraryNavigation v-if="$vuetify.display.mdAndUp" :library-id="library.libraryId" />
+      <NavigationLibrary v-if="$vuetify.display.mdAndUp" :library-id="library.libraryId" />
       <VSpacer />
       <MenusPageSize
         v-if="!$route.path.endsWith('/recommended') || libraryId === 'all'"
         v-model="config.pageSize.libraries"
       />
     </ToolbarSticky>
-    <LibraryNavigation v-if="$vuetify.display.smAndDown" :library-id="library.libraryId" bottom-navigation />
+    <NavigationLibrary v-if="$vuetify.display.smAndDown" :library-id="library.libraryId" bottom-navigation />
     <VContainer fluid>
       <NuxtPage v-if="library.libraryId !== 'all'" />
     </VContainer>
