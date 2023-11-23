@@ -48,6 +48,11 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vue-i18n"],
   },
+  nitro: {
+    prerender: {
+      routes: ["/"],
+    },
+  },
   modules: [
     "vuetify-nuxt-module",
     "@nuxtjs/color-mode",
@@ -163,6 +168,7 @@ export default defineNuxtConfig({
     },
   },
   googleFonts: {
+    display: "swap",
     families: {
       Inter: true,
     },
