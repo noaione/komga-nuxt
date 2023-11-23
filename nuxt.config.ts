@@ -44,6 +44,17 @@ export default defineNuxtConfig({
         strictMessage: false,
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes("unplugin-vue-i18n/messages")) {
+              return "i18n";
+            }
+          },
+        },
+      },
+    },
   },
   build: {
     transpile: ["vue-i18n"],
