@@ -57,6 +57,7 @@ export default defineNuxtConfig({
     "@nuxtjs/fontaine",
     "@nuxtjs/eslint-module",
     "@vueuse/nuxt",
+    "@formkit/auto-animate/nuxt",
     "nuxt-open-fetch",
     "nuxt-typed-router",
   ],
