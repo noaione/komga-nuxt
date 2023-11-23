@@ -16,6 +16,7 @@ class KomgaSSEPlugin {
   private url: string;
   private eventTarget: EventTarget;
   private _connected: boolean;
+  private _connecting: boolean;
 
   constructor(url: string) {
     this.url = url;
@@ -26,21 +27,32 @@ class KomgaSSEPlugin {
     this.eventTarget = new EventTarget();
 
     this._connected = false;
+    this._connecting = false;
   }
 
   connect() {
-    if (this._connected) {
+    if (this._connected || this._connecting) {
       return;
     }
 
     console.info("Connecting to SSE");
+    this._connecting = true;
     this.abortSignal = new AbortController();
+
+    this.abortSignal.signal.addEventListener("abort", () => {
+      console.info("SSE aborted");
+    });
 
     fetchEventSource(this.url, {
       method: "GET",
       credentials: "include",
       signal: this.abortSignal.signal,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest",
+      },
       onopen: async (response) => {
+        this._connecting = false;
+
         if (response.ok && response.headers.get("content-type") === EventStreamContentType) {
           console.info("SSE connected established");
 
@@ -55,6 +67,8 @@ class KomgaSSEPlugin {
             this.eventTarget.dispatchEvent(event);
           }
 
+          this._connected = false;
+
           // client-side errors are usually non-retriable:
           throw new FatalError();
         } else {
@@ -62,14 +76,11 @@ class KomgaSSEPlugin {
         }
       },
       onmessage: (event) => {
-        console.trace("SSE event received", event);
-
         // Custom event
         const customEvent = new CustomEvent(event.event, {
           detail: JSON.parse(event.data),
         });
 
-        console.trace("Dispatching event", customEvent);
         this.eventTarget.dispatchEvent(customEvent);
 
         // Also dispatch to global event target
@@ -83,22 +94,12 @@ class KomgaSSEPlugin {
         this.eventTarget.dispatchEvent(globalEvent);
       },
       onerror: (error) => {
+        this._connecting = false;
+
         if (error instanceof RetriableError) {
-          if (this.reconnectAttempt > this.attemptReset) {
-            this.reconnectAttempt = 1;
-          }
-
-          this._connected = false;
-
-          const delayBy = this.baseDelay * 2 ** this.reconnectAttempt;
-
-          console.info(`Reconnecting SSE in ${delayBy}ms`);
-
-          setTimeout(() => {
-            this.reconnectAttempt++;
-            this.connect();
-          }, delayBy);
+          this.#retryConnection();
         } else {
+          this.abortSignal = undefined;
           throw error;
         }
       },
@@ -106,14 +107,8 @@ class KomgaSSEPlugin {
         console.info("SSE closed");
 
         this.reconnectAttempt = 1;
-        this._connected = false;
-
-        const delayBy = this.baseDelay * 2 ** this.reconnectAttempt;
-
-        // Try to reconnect
-        setTimeout(() => {
-          this.connect();
-        }, delayBy);
+        this.abortSignal = undefined;
+        this.#retryConnection();
       },
     });
   }
@@ -121,6 +116,23 @@ class KomgaSSEPlugin {
   disconnect() {
     this.abortSignal?.abort();
     this._connected = false;
+  }
+
+  #retryConnection() {
+    if (this.reconnectAttempt > this.attemptReset) {
+      this.reconnectAttempt = 1;
+    }
+
+    this._connected = false;
+
+    const delayBy = this.baseDelay * 2 ** this.reconnectAttempt;
+
+    console.info(`Reconnecting SSE in ${delayBy}ms`);
+
+    setTimeout(() => {
+      this.reconnectAttempt++;
+      this.connect();
+    }, delayBy);
   }
 
   on<T>(event: string, listener: SSEListener<T>) {
@@ -134,20 +146,8 @@ class KomgaSSEPlugin {
 
 export default defineNuxtPlugin(() => {
   const { origin } = useKomgaServerUrl();
-  const auth = useKomgaUser();
 
   const es = new KomgaSSEPlugin(`${origin}/sse/v1/events`);
-
-  watch(
-    () => auth.authenticated,
-    (a) => {
-      if (a) {
-        es.connect();
-      } else {
-        es.disconnect();
-      }
-    }
-  );
 
   return {
     provide: {

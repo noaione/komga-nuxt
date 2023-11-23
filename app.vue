@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import type { KSSESessionExpired, KSSETaskQueue } from "./utils/sse-events";
 
+const route = useRoute();
 const router = useRouter();
 const auth = useKomgaUser();
 const reusables = useReusableContents();
@@ -49,4 +50,35 @@ onMounted(() => {
     $komgaSSE.connect();
   }
 });
+
+watch(
+  () => auth.authenticated,
+  (auth) => {
+    if (!auth) {
+      $komgaSSE.disconnect();
+      router.push("/login");
+    }
+  },
+  {
+    immediate: true,
+  }
+);
+
+watch(
+  [() => auth.authenticated, () => route.name],
+  ([authenticated, newRoute]) => {
+    if (
+      authenticated && // only connect if we're not in login/startup page
+      newRoute !== "login" &&
+      newRoute !== "startup" &&
+      newRoute !== "index"
+    ) {
+      $komgaSSE.connect();
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+);
 </script>

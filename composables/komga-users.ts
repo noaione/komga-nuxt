@@ -54,14 +54,17 @@ export const useKomgaUser = defineStore(
             throw ctx.error;
           }
         },
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
       });
 
       if (data.value) {
         user.value = data.value;
       }
 
-      if (error) {
-        throw error;
+      if (error.value) {
+        throw error.value;
       }
     }
 
