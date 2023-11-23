@@ -36,8 +36,12 @@
       <template #item="{ item, props }">
         <VListItem v-bind="props" :disabled="item.raw.type === 'header'">
           <template #title>
-            <VListItemTitle v-if="item.raw.type === 'search'">{{ $t("searchbox.search_all") }}</VListItemTitle>
-            <VListItemSubtitle v-if="item.raw.type === 'header'">{{ item.raw.result.name }}</VListItemSubtitle>
+            <VListItemTitle v-if="item.raw.type === 'search'">
+              {{ $t("searchbox.search_all") }}
+            </VListItemTitle>
+            <VListItemSubtitle v-if="item.raw.type === 'header'">
+              {{ item.raw.result.name }}
+            </VListItemSubtitle>
             <SearchResultSeries v-else-if="item.raw.type === 'series'" :data="item.raw.result" />
             <SearchResultBook v-else-if="item.raw.type === 'book'" :data="item.raw.result" />
             <SearchResultReadCollection
@@ -54,51 +58,15 @@
 </template>
 
 <script setup lang="ts">
-import type { components as KomgaComponents } from "#build/types/nuxt-open-fetch/komga";
-
-type KomgaBookWrapped = {
-  type: "book";
-  result: KomgaComponents["schemas"]["BookDto"];
-};
-
-type KomgaSeriesWrapped = {
-  type: "series";
-  result: KomgaComponents["schemas"]["SeriesDto"];
-};
-
-type KomgaCollectionWrapped = {
-  type: "collection";
-  result: KomgaComponents["schemas"]["CollectionDto"];
-};
-
-type KomgaReadListWrapped = {
-  type: "readlist";
-  result: KomgaComponents["schemas"]["ReadListDto"];
-};
-
-type KomgaSearchTemp = {
-  type: "search";
-  result: {
-    id: "SEARCH_ALL";
-    name: string;
-  };
-};
-
-type KomgaSearchHeader = {
-  type: "header";
-  result: {
-    id: string;
-    name: string;
-  };
-};
+import type { KomgaComponents } from "#imports";
 
 type KomgaSearchResultWrapped =
   | KomgaBookWrapped
   | KomgaSeriesWrapped
   | KomgaCollectionWrapped
   | KomgaReadListWrapped
-  | KomgaSearchTemp
-  | KomgaSearchHeader;
+  | KomgaSearchWrapped
+  | KomgaSearchHeaderWrapped;
 
 const searchbox = ref();
 const selectedItem = ref<KomgaSearchResultWrapped>();
@@ -127,7 +95,10 @@ const mergedResults = computed(() => {
     type: "series",
     result: series,
   })) as KomgaSeriesWrapped[];
-  const books = (_booksResults.value ?? []).map((book) => ({ type: "book", result: book })) as KomgaBookWrapped[];
+  const books = (_booksResults.value ?? []).map((book) => ({
+    type: "book",
+    result: book,
+  })) as KomgaBookWrapped[];
   const collections = (_collectionsResults.value ?? []).map((collection) => ({
     type: "collection",
     result: collection,

@@ -8,16 +8,16 @@
           <span :style="{ fontSize: '1.1rem' }">{{ upstream.toolbarCount }}</span>
         </VChip>
       </VToolbarTitle>
-      <NavigationLibrary v-if="$vuetify.display.mdAndUp" :library-id="library.libraryId" />
+      <NavigationLibrary v-if="$vuetify.display.mdAndUp" :library-id="libraryId" />
       <VSpacer />
       <MenusPageSize
-        v-if="!$route.path.endsWith('/recommended') || libraryId === 'all'"
+        v-if="route.name !== 'libraries-id-recommended' || libraryId === 'all'"
         v-model="config.pageSize.libraries"
       />
     </ToolbarSticky>
-    <NavigationLibrary v-if="$vuetify.display.smAndDown" :library-id="library.libraryId" bottom-navigation />
+    <NavigationLibrary v-if="$vuetify.display.smAndDown" :library-id="libraryId" bottom-navigation />
     <VContainer fluid>
-      <NuxtPage v-if="library.libraryId !== 'all'" />
+      <NuxtPage v-if="libraryId !== 'all'" />
     </VContainer>
   </div>
 </template>
@@ -27,9 +27,9 @@ const route = useRoute();
 const router = useRouter();
 const config = useKomgaConfig();
 const upstream = useKomgaGlobals();
-const libraryId = String(route.params.id);
 
-const library = useKomgaLibrary(libraryId);
+const libraryId = ref("all");
+const library = useKomgaLibrary(libraryId.value);
 
 async function processRoute(routeId: string) {
   upstream.toolbarCount = undefined;
@@ -46,24 +46,31 @@ async function processRoute(routeId: string) {
 }
 
 watch(
-  () => [route.path, route.params?.id],
-  async ([routeFull, routeId]) => {
-    if (String(routeFull).includes("/all") && !String(routeFull).startsWith("/libraries/all")) {
+  () => route.params,
+  async (routeParam) => {
+    const routeId = String((routeParam as { id: string }).id);
+
+    if (!routeId) {
+      router.replace("/libraries/all");
+      libraryId.value = "all";
       await processRoute("all");
 
       return;
     }
 
-    const paramId = String(routeId);
+    if (routeId === "all") {
+      libraryId.value = "all";
+      await processRoute("all");
 
-    if (String(routeFull).endsWith(paramId)) {
-      console.log("Forcing route for", paramId);
-
-      await processRoute(paramId);
+      return;
     }
+
+    libraryId.value = routeId;
+    await processRoute(routeId);
   },
   {
     immediate: true,
+    deep: true,
   }
 );
 
@@ -73,7 +80,5 @@ onMounted(async () => {
   if (libraries.librariesList.length === 0) {
     await libraries.fetchLibraries();
   }
-
-  await processRoute(libraryId);
 });
 </script>

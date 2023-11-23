@@ -73,7 +73,6 @@ module.exports = {
         allowSeparatedGroups: true,
       },
     ],
-    "@stylistic/ts/indent": ["error", 2],
     "padding-line-between-statements": [
       "error",
       // Always require blank lines after directives (like 'use-strict'), except between directives

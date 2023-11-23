@@ -45,3 +45,13 @@ html {
 .list-warning:hover .v-list-item__title {
   color: white;
 }
+
+/* Taken from vue-line-clamp */
+.clamp-line {
+  display: block;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+}

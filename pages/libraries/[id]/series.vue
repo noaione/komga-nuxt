@@ -43,13 +43,20 @@ const router = useRouter();
 
 const currentPage = ref(1);
 
-const series = computed(() => {
-  const library = useKomgaLibrary(route.params.id.toString());
+const routeId = computed(() => {
+  if (route.name === "libraries-id-series") {
+    return route.params.id;
+  }
 
-  return library.series;
+  return "all";
 });
+
 const totalPages = computed(() => {
-  const library = useKomgaLibrary(route.params.id.toString());
+  if (routeId.value === "all") {
+    return 0;
+  }
+
+  const library = useKomgaLibrary(routeId.value);
 
   const totalCounts = library.totalSeries;
   const perPage = config.pageSize.libraries;
@@ -126,10 +133,10 @@ async function dispatchAndProcess(libraryId: string) {
 }
 
 watch(
-  () => route.fullPath,
-  (newPath) => {
-    if (newPath.includes("/libraries") && newPath.includes("/series")) {
-      const libraryId = String(route.params.id);
+  [() => route.name, () => route.params],
+  ([newPath, params]) => {
+    if (newPath === "libraries-id-series") {
+      const libraryId = String((params as { id: string }).id);
 
       config.library.routeMode[libraryId] = "series";
 
@@ -138,6 +145,7 @@ watch(
   },
   {
     immediate: true,
+    deep: true,
   }
 );
 </script>

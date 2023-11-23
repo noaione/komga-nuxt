@@ -5,17 +5,19 @@
 <script setup lang="ts">
 const config = useKomgaConfig();
 const route = useRoute();
-const libraryId = String(route.params.id);
 
 watch(
-  () => route.fullPath,
-  (newPath) => {
-    if (newPath.includes("/libraries") && newPath.includes("/readlists")) {
+  [() => route.name, () => route.params],
+  ([newPath, params]) => {
+    if (newPath === "libraries-id-readlists") {
+      const libraryId = String((params as { id: string }).id);
+
       config.library.routeMode[libraryId] = "readlists";
     }
   },
   {
     immediate: true,
+    deep: true,
   }
 );
 </script>
