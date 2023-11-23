@@ -1,6 +1,6 @@
 <template>
   <VApp :theme="colorMode.value">
-    <NuxtLayout>
+    <NuxtLayout v-if="appReady">
       <NuxtPage />
     </NuxtLayout>
     <SnackbarNotification />
@@ -17,6 +17,8 @@ const auth = useKomgaUser();
 const reusables = useReusableContents();
 const { $komgaSSE } = useNuxtApp();
 const colorMode = useColorMode();
+
+const appReady = ref(false);
 
 onMounted(() => {
   useSeoMeta({
@@ -46,9 +48,16 @@ onMounted(() => {
     }
   });
 
-  if (auth.authenticated) {
-    $komgaSSE.connect();
+  const invalidRouteRedirect = ["/", "/startup", "/login"];
+
+  // Check if this is the first load of the app, if yes check what route we're on
+  // if we're already in /startup or /login or /, do nothing
+  // if not, redirect to `/startup`
+  if (!appReady.value && !invalidRouteRedirect.includes(route.path)) {
+    router.push(`/startup?redirect=${encodeURIComponent(route.fullPath)}`);
   }
+
+  appReady.value = true;
 });
 
 watch(
