@@ -46,6 +46,14 @@ export const useKomgaUser = defineStore(
       const { data, error } = await useKomgaFetch("/api/v2/users/me", {
         baseURL: origin,
         credentials: "include",
+        onRequestError: ({ error }) => {
+          throw error;
+        },
+        onResponseError: (ctx) => {
+          if (ctx.error) {
+            throw ctx.error;
+          }
+        },
       });
 
       if (data.value) {

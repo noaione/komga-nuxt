@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import type { KomgaTaskQueue } from "./composables/reusable-contents";
+import type { KSSESessionExpired, KSSETaskQueue } from "./utils/sse-events";
 
 const router = useRouter();
 const auth = useKomgaUser();
@@ -22,14 +22,15 @@ onMounted(() => {
     title: "Komga",
   });
 
-  $komgaSSE.on<KomgaTaskQueue>("TaskQueueStatus", (event) => {
+  $komgaSSE.on<KSSETaskQueue>(TASK_QUEUE_STATUS, (event) => {
     reusables.tasksData = event.detail;
   });
 
-  $komgaSSE.on("SessionExpired", () => {
-    auth.logout();
-
-    router.push("/login");
+  $komgaSSE.on<KSSESessionExpired>(SESSION_EXPIRED, (event) => {
+    if (event.detail.userId === auth.user?.id) {
+      auth.logout();
+      router.push("/login");
+    }
   });
 
   $komgaSSE.on("KomgaSSEUnauthorized", () => {

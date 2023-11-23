@@ -10,11 +10,6 @@ export interface KomgaReusableSnackbar {
   };
 }
 
-export interface KomgaTaskQueue {
-  count: number;
-  countByType: Record<string, number>;
-}
-
 export interface KomgaReusableConfirmDialog {
   title: string;
   body?: string;
@@ -29,7 +24,7 @@ export interface KomgaReusableConfirmDialog {
 
 interface KomgaReusable {
   snackbars: KomgaReusableSnackbar[];
-  tasksData?: KomgaTaskQueue;
+  tasksData?: KSSETaskQueue;
   confirmDialog?: KomgaReusableConfirmDialog;
 }
 
