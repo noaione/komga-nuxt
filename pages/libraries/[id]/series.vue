@@ -4,6 +4,7 @@
     :symbols="alphaNavSymbols"
     :selected="activeAlphaNav"
     :group-count="alphaNavGroupings"
+    @select="selectAlphaNavigation"
   />
 
   <EmptyState
@@ -132,11 +133,17 @@ async function dispatchAndProcess(libraryId: string) {
   globals.toolbarCount = library.totalSeries;
 }
 
+function selectAlphaNavigation(symbol: string) {
+  activeAlphaNav.value = activeAlphaNav.value === symbol ? undefined : symbol;
+}
+
 watch(
   [() => route.name, () => route.params],
   ([newPath, params]) => {
     if (newPath === "libraries-id-series") {
       const libraryId = String((params as { id: string }).id);
+
+      console.log("dispatch series", libraryId);
 
       config.library.routeMode[libraryId] = "series";
 

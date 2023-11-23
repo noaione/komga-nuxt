@@ -7,11 +7,14 @@
     </template>
 
     <VList>
-      <VListGroup v-model="selection">
-        <VListItem v-for="size in sizes" :key="size" @click="selection = size">
-          <VListItemTitle>{{ size }}</VListItemTitle>
-        </VListItem>
-      </VListGroup>
+      <VListItem
+        v-for="size in sizes"
+        :key="size"
+        :color="size === selection ? 'secondary' : ''"
+        @click="selection = size"
+      >
+        <VListItemTitle>{{ size }}</VListItemTitle>
+      </VListItem>
     </VList>
   </VMenu>
 </template>

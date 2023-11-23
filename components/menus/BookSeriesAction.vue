@@ -6,7 +6,7 @@
       </VBtn>
     </template>
 
-    <VList density="compact">
+    <VList>
       <VListItem v-if="user.isAdmin && series && !series.oneshot" @click="scanSeries(false)">
         <VListItemTitle>{{ $t("menu.scan_series_files") }}</VListItemTitle>
       </VListItem>

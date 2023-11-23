@@ -1,12 +1,12 @@
 <template>
-  <VMenu v-if="auth.isAdmin" location="bottom">
+  <VMenu v-if="auth.isAdmin" location="bottom" :offset="[0, 0]">
     <template #activator="{ props: dataBind }">
       <VBtn icon v-bind="dataBind" @click.prevent="">
         <VIcon>mdi-dots-vertical</VIcon>
       </VBtn>
     </template>
 
-    <VList density="compact">
+    <VList>
       <VListItem @click="scanLibrary(false)">
         <VListItemTitle>{{ $t("menu.scan_library_files") }}</VListItemTitle>
       </VListItem>

@@ -1,9 +1,9 @@
 <template>
   <div :style="$vuetify.display.xs ? { marginBottom: '56px' } : undefined">
     <ToolbarSticky>
-      <MenusLibraryAction v-if="library.library" :library="library.library" />
+      <MenusLibraryAction v-if="selectedLibrary" :library="selectedLibrary" />
       <VToolbarTitle>
-        <span>{{ library.library?.name ?? $t("common.all_libraries") }}</span>
+        <span>{{ selectedLibrary?.name ?? $t("common.all_libraries") }}</span>
         <VChip v-if="upstream.toolbarCount" label class="mx-4">
           <span :style="{ fontSize: '1.1rem' }">{{ upstream.toolbarCount }}</span>
         </VChip>
@@ -29,41 +29,49 @@ const config = useKomgaConfig();
 const upstream = useKomgaGlobals();
 
 const libraryId = ref("all");
-const library = useKomgaLibrary(libraryId.value);
+const libraries = useKomgaLibraries();
+
+const selectedLibrary = computed(() => {
+  if (libraryId.value === "all") {
+    return;
+  }
+
+  return libraries.librariesList.find((library) => library.id === libraryId.value);
+});
 
 async function processRoute(routeId: string) {
   upstream.toolbarCount = undefined;
 
   if (routeId === "all") {
-    await library.fetchSeries(0);
+    const library = useKomgaLibrary("all");
 
+    await library.fetchSeries(0);
     upstream.toolbarCount = library.totalSeries;
   } else {
-    const currentRoute = config.library.routeMode[routeId] ?? "recommended";
+    const currentRoute = config.library.routeMode[routeId];
 
-    router.push(`/libraries/${routeId}/${currentRoute}`);
+    if (!currentRoute && route.name !== "libraries-id-recommended") {
+      config.library.routeMode[routeId] = "recommended";
+      router.replace({
+        name: "libraries-id-recommended",
+        params: { id: routeId },
+      });
+      // @ts-expect-error
+    } else if (currentRoute && route.name === "libraries-id") {
+      router.replace({
+        name: `libraries-id-${currentRoute ?? "recommended"}`,
+        params: { id: routeId },
+      });
+    }
   }
 }
 
 watch(
   () => route.params,
   async (routeParam) => {
-    const routeId = String((routeParam as { id: string }).id);
+    const routeId = String((routeParam as { id: string }).id ?? "all");
 
-    if (!routeId) {
-      router.replace("/libraries/all");
-      libraryId.value = "all";
-      await processRoute("all");
-
-      return;
-    }
-
-    if (routeId === "all") {
-      libraryId.value = "all";
-      await processRoute("all");
-
-      return;
-    }
+    console.log("Library enter", routeId, route.name);
 
     libraryId.value = routeId;
     await processRoute(routeId);
