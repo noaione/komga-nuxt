@@ -58,6 +58,7 @@ export default defineNuxtConfig({
     "@nuxtjs/eslint-module",
     "@vueuse/nuxt",
     "nuxt-open-fetch",
+    "nuxt-typed-router",
   ],
   colorMode: {
     preference: "system",
